@@ -2,24 +2,23 @@
 // This code is licensed under MIT license (see LICENSE.txt for details)
 
 #include <Arduino.h>
-#include "captive_portal.h"
+#include <LittleFS.h>
 
-CaptivePortal *portal = nullptr;
+#include "Portal.h"
+#include "WiFiManager.h"
 
 void setup() {
-	pinMode(12, OUTPUT);      // relay
 	pinMode(0, INPUT_PULLUP); // button
+	pinMode(12, OUTPUT);      // relay
+	pinMode(13, OUTPUT);      // LED
 
 	Serial.begin(115200);
 
-	if(!LittleFS.begin()){
+	if (!LittleFS.begin()) {
 		Serial.println("An Error has occurred while mounting LittleFS");
-		return;
 	}
-
-	portal = new CaptivePortal();
 }
 
 void loop() {
-	if (portal != nullptr) portal->loop();
+	manager.reconnect();
 }

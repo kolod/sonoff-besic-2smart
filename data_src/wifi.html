@@ -54,13 +54,6 @@
             const refreshbtn = document.getElementById("refreshbtn");
             const table = document.getElementById("myTable");
         
-            window.onload = () => {
-                refreshbtn.onclick = refresh;
-                getConnectedWifi();
-                getWifi();
-                setTimeout(getWifi, 3000);
-            }
-        
             function refresh() {
                 refreshbtn.disabled = true;
                 clearTable();
@@ -73,8 +66,6 @@
         
             function getWifi() {
                 clearTable();
-                // stations = {"WebbyLab_2.4":"3","":"3","EW11_4686":"0","EW11_4A6E":"0","Redmi\"":"0","EW11_C55A":"0","karbon":"3","EW11_C7BA":"0","Karbon_Guest":"3","2smart":"3","AGRII":"3","DIRECT-56-HP M426 LaserJet":"3","INTELLOGATE":"4","V20":"3","AGRII_GUEST":"3"};
-                // tableFill(Object.entries(stations));
                 try {
                     const xmlhttp = new XMLHttpRequest();
                         xmlhttp.open("GET","/scan", true);
@@ -177,13 +168,20 @@
             }
 
             function locationDetector() {
-                    const pathname = window.location.pathname.replace(/^\//, '') || 'index.html';
-                    const header = document.getElementById('header');
-                    const el = header.querySelectorAll(`a[href$="${pathname}"]`);
+                const pathname = window.location.pathname.replace(/^\//, '') || 'index.html';
+                const header = document.getElementById('header');
+                const el = header.querySelectorAll(`a[href$="${pathname}"]`);
 
-                    if (el.length) el[0].classList.add('bold');
-                }
-            locationDetector();
+                if (el.length) el[0].classList.add('bold');
+            }
+        
+            window.onload = () => {
+                refreshbtn.onclick = refresh;
+                getConnectedWifi();
+                getWifi();
+                setTimeout(getWifi, 3000);
+                locationDetector();
+            }
         </script>
 	</body>
 </html>

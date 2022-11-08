@@ -43,6 +43,30 @@ function reboot() {
     xmlhttp.send(null);
 }
 
+function parseSettingsJSON(jsonstring) {
+    obj = JSON.parse(jsonstring);
+
+    try {
+        inputs.mail.value = obj.email;
+        inputs.token.value = obj.token;
+        inputs.hostname.value = obj.host;
+        inputs.brokerport.value = obj.port;
+        inputs.product.value = obj.product_id;
+        inputs.device.value = obj.device_id;
+    } catch (e) {console.log(e)};
+}
+
+function getSettingsJSON() {
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", `/settings`, true);
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4) {
+            if (xmlhttp.status == 200) parseSettingsJSON(xmlhttp.responseText);
+        }
+    };
+    xmlhttp.send(null);
+}
+
 function getCredentials() {
     return {
         mail: inputs.mail.value,
@@ -63,6 +87,8 @@ function locationDetector() {
 }
 
 window.onload = () => {
+    getSettingsJSON();
+
     acc = document.getElementsByClassName('accordion');
 
     document.getElementById('btn_save').onclick = save;
